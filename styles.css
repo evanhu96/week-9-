@@ -1,0 +1,24 @@
+*{
+    background-color: orange;
+}
+header{
+    text-align: center;
+    margin-top: 10vh;
+    font-size: 30px;
+}
+section{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    border:solid black 1px;
+    margin-top: 10vh;
+    height:90vh;
+    width: 100%;
+    background-color: white;
+}
+div{
+    width: 250px;
+    height:300px;
+    border: solid black 1px;
+}
