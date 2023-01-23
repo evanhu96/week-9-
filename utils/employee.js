@@ -1,8 +1,9 @@
 class Employee {
-  constructor(name,position,github) {
-    this.id = 1,
+  constructor(position,name,id,email,github) {
     this.name = name,
     this.position = position,
+    this.id = id,
+    this.email = email,
     this.github = github
   }
 }

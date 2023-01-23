@@ -47,11 +47,33 @@ const mainQuestions = [
   },
   {
     type: "input",
+    message: "What is your id?",
+    name: "id",
+    validate: function (answer) {
+      if (answer.length < 1) {
+        return console.log("Please enter your id");
+      }
+      return true;
+    },
+  },
+  {
+    type: "input",
     message: "What is your email?",
-    name: "position",
+    name: "email",
     validate: function (answer) {
       if (answer.length < 1) {
         return console.log("Please enter your email");
+      }
+      return true;
+    },
+  },
+  {
+    type: "input",
+    message: "What is your GitHub profile?",
+    name: "github",
+    validate: function (answer) {
+      if (answer.length < 1) {
+        return console.log("Please enter your github");
       }
       return true;
     },
@@ -83,19 +105,7 @@ const internQ = [
     },
   },
 ];
-const engineerQ = [
-  {
-    type: "input",
-    message: "What is your GitHub username?",
-    name: "github",
-    validate: function (answer) {
-      if (answer.length < 1) {
-        return console.log("Please enter your github username");
-      }
-      return true;
-    },
-  },
-];
+
 
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (err) => {
@@ -114,27 +124,28 @@ async function init(position) {
   try {
     console.log(position);
     var userResponses = await inquirer.prompt(mainQuestions);
+    console.log(userResponses);
     if (position == "Manager") {
       var managerResponses = await inquirer.prompt(managerQ);
+      console.log(Object.values(userResponses));
       let manager = new Manager(
         ...Object.values(userResponses),
         ...Object.values(managerResponses)
       );
       employees.push(manager);
     } else if (position == 'Intern') {
-      console.log("hey");
       var internResponses = await inquirer.prompt(internQ);
       let intern = new Intern(
+        position,
         ...Object.values(userResponses),
         ...Object.values(internResponses)
       );
 
       employees.push(intern);
     } else {
-      var engineerResponses = await inquirer.prompt(engineerQ);
       let engineer = new Engineer(
+        position,
         ...Object.values(userResponses),
-        ...Object.values(engineerResponses)
       );
       employees.push(engineer);
     }
@@ -146,16 +157,6 @@ async function init(position) {
       const markdown = createCards(employees);
       await writeFileAsync("index.html", markdown);
     }
-    // else{
-    //     await writeFileAsync("employeeCards.html");
-
-    // }
-    // x= new Employee(...Object.values(userResponses));
-    // console.log(x)
-    // console.log("Thank you!");
-    //   console.log("Generating your HTML...");
-    //   const markdown = generateMarkdown(userResponses, userInfo);
-    //   console.log(markdown);
   } catch (error) {
     console.log(error);
   }
@@ -164,12 +165,13 @@ async function init(position) {
 function createCards(employees){
   var body = ''
   for (i in employees){
-    console.log(employees[i].name);
+    console.log(employees[i]);
     body += `        
     <div>
     <li>${employees[i].name}</li>
     <li>${employees[i].position}</li>
-    <li>${employees[i].email}</li>
+    <a href = ${employees[i].email}>${employees[i].email}</a>
+    <a href = ${employees[i].github}>${employees[i].github}</a>
     <li>${employees[i].id}</li>
 </div>`
   }
